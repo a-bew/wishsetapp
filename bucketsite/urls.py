@@ -21,7 +21,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^bucketlist/', include('bucketlist.urls')),
+    url(r'^', include('bucketlist.urls')), #^bucketlist/
     url(r'^admin/', admin.site.urls),
 ]
 

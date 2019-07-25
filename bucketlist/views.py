@@ -71,7 +71,7 @@ def Signin(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/bucketlist/')
+                return HttpResponseRedirect('/')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponse("Your bucketlist account is disabled.")
@@ -93,7 +93,7 @@ def restricted(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/bucketlist/')
+    return HttpResponseRedirect('/')
 
 @login_required
 def showAddWish(request):

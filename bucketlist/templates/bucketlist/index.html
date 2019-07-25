@@ -29,6 +29,9 @@
         .list-group {
             margin-bottom: 0px;
         }
+        .setpointer{
+            cursor: pointer;
+        }
     </style>
     </head>
 
@@ -39,7 +42,7 @@
             <nav>
                 <ul class="nav nav-pills pull-right">
                     {% if user.is_authenticated %}
-                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    <li role="presentation" class="active"><a href="/">Home</a>
 
                     <li role="presentation"><a href="/bucketlist/addWish/">Add Item</a>
                     </li>
@@ -49,7 +52,7 @@
                     <li role="presentation"><a href="/bucketlist/logout/">Logout</a></li>
                     {% else %}
 
-                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    <li role="presentation" class="active"><a href="/">Home</a>
                     </li>
                     <li role="presentation"><a href="/bucketlist/Signin/">Sign In</a>
                     </li>
@@ -258,6 +261,7 @@ function wishes(data) {
 
             var aPrev = $('<li/>').append($('<a/>').attr({
                     // 'href': '#'
+                    'class': 'setpointer'
 
                 }, {
                     'aria-label': 'Previous'
@@ -284,7 +288,9 @@ function wishes(data) {
         var offset = 0;
         for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
             offset = i
-            var aPage = $('<a/>').text(i + 0);
+            var aPage = $('<a/>')
+            .attr('class', 'setpointer')
+            .text(i + 0);
            
             $(aPage).click(function(offset) {
                 return function() {
@@ -297,7 +303,7 @@ function wishes(data) {
            
             var page = $('<li/>').append(aPage);
             if ((data.number) == i) {
-                $(page).attr('class', 'active');
+                $(page).attr('class', 'active setpointer');
             }
  
             $('.pagination').append(page);
@@ -313,6 +319,7 @@ function wishes(data) {
         if (data.has_next){
             var nextLink = $('<li/>').append($('<a/>').attr({
                     // 'href': '#'
+                    'class': 'setpointer'
                 }, {
                     'aria-label': 'Next'
                 })
