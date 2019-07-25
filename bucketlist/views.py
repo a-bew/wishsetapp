@@ -351,7 +351,7 @@ def getWish(request):
                 'has_previous' : wishes.has_previous(),
                 'has_next' : wishes.has_next(),
                 'previous_page_number' : None,
-                'next_page_number' : (wishes.next_page_number() if wishes.has_next () else 0) 
+                'next_page_number' : (wishes.next_page_number() if wishes.has_next () else 0), 
                 'start_index' : wishes.start_index(),
                 'end_index' : wishes.end_index()
 
