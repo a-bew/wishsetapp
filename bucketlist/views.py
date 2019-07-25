@@ -317,9 +317,15 @@ def getWish(request):
         #wishes = user.wishes.filter(active=True, parent__isnull=True)
         wishes_dict = []
 
-
-        limit = 3
-        pages_display_per_page = 2
+        if len(wishes)<1:
+            limit = 1
+            pages_display_per_page = 0
+        elif len(wishes) => 1 or len(wishes) <= 6:
+            limit = 3
+            pages_display_per_page = 1
+        else:
+            limit = 3
+            pages_display_per_page = 2
 
         total = len(wishes[:])
 
