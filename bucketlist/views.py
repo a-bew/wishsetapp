@@ -45,7 +45,7 @@ def showSignUp(request):
 
             registered = True
         else:
-            print user_form.errors#, profile_form.errors
+            print(user_form.errors)#, profile_form.errors
     else:
         user_form = UserForm()
         #user_profile = UserProfileForm()
@@ -77,7 +77,7 @@ def Signin(request):
                 return HttpResponse("Your bucketlist account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
@@ -111,7 +111,7 @@ def castWishform(request):
             saved = True 
             #return index(request)
         else:
-            print tbl_wishform.errors#, profile_form.errors
+            print(tbl_wishform.errors)#, profile_form.errors
     else:
         tbl_wishform = Tbl_wishForm()
         #user_profile = UserProfileForm()
@@ -164,7 +164,7 @@ def addWish(request):
     #           request.session['username'] = user.id            #introduce to STORE SESSION
     #            return index(request)
     #        else:
-    #            print form.errors
+    #            print(form.errors)
         else:
             MyTbl_wishForm = Tbl_wishForm()
     return render(request, 'bucketlist/saved.html', {'saved': saved})
