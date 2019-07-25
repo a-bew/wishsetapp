@@ -1,1 +1,1 @@
-web: gunicorn wishsetapp.wsgi --log-file -
+web: gunicorn bucketsite.wsgi --log-file -
