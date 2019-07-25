@@ -226,16 +226,17 @@
 
 function wishes(data) {
 
-    console.log(data)
+//    console.log(data)
     var wishObj = data[1];
     var wish = '';
  //   console.log(data.object_list)     
+    content = "";    
     $.each(wishObj, function(index, value) {
         // wish = $(div).clone();
         // $(wish).find('h4').text(value.Title);
         // $(wish).find('p').text(value.Description);
         // $('.jumbotron').append(wish);
-        content = "";        
+            
         content += '<li class="list-group-item">'
         content += '<div class="checkbox">'
         content += '<label>'+value.Title+'</label>'
@@ -249,12 +250,12 @@ function wishes(data) {
         content += '</div>'
         content += '</li>'
         
-        $('#ulist').append(content);
 
     });
+    $('#ulist').append(content);
 
      data = data[0]
-     console.log(data.has_previous, data.has_next, data.lower_bound, data.upper_bound)
+     // console.log(data.has_previous, data.has_next, data.lower_bound, data.upper_bound)
 
 
          if (data.has_previous){
@@ -363,32 +364,19 @@ function getwishes(page) {
           type: 'POST',
           data: {'page': page},
           success: function(data){
-            result = JSON.parse(data)
+
+            data = JSON.parse(data)
+
             $('#ulist').empty()
 
             $('.pagination').empty()
 
-            console.log(result)
-
-            // var div = $('<div>')
-            //     .attr('class', 'list-group')
-            //     .append($('<a>')
-            //         .attr('class', 'list-group-item active')
-            //         .append($('<h4>')
-            //             .attr('class', 'list-group-item-heading'),
-            //             $('<p>')
-            //             .attr('class', 'list-group-item-text')));
-            // wishes(result)
-            data = result
-            console.log(data)
             var wishObj = data[1];
+
             var wish = '';
-         //   console.log(data.object_list)     
+
             $.each(wishObj, function(index, value) {
-                // wish = $(div).clone();
-                // $(wish).find('h4').text(value.Title);
-                // $(wish).find('p').text(value.Description);
-                // $('.jumbotron').append(wish);
+
                 content = "";        
                 content += '<li class="list-group-item">'
                 content += '<div class="checkbox">'
@@ -408,103 +396,91 @@ function getwishes(page) {
             });
 
              data = data[0]
-             console.log(data.has_previous, data.has_next, data.lower_bound, data.upper_bound)
+             if (data.has_previous){
 
+                var aPrev = $('<li/>').append($('<a/>').attr({
+                        // 'href': '#'
+                        'class': 'setpointer'
 
-                 if (data.has_previous){
+                    }, {
+                        'aria-label': 'Previous'
+                    })
+                    .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
 
-                    var aPrev = $('<li/>').append($('<a/>').attr({
-                            // 'href': '#'
-                            'class': 'setpointer'
-
-                        }, {
-                            'aria-label': 'Previous'
-                        })
-                        .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
-
-                    $(aPrev).click(function() {
-                        return function() {
-                            offset = data.lower_bound-1
-                            getwishes(offset);
-                            console.log("offset")
-                        }
-                    }(offset));
-
-        //            var prevLink = $('<li/>').append(aPrev);
-                    
-                    $('.pagination').append(aPrev);
-
-                 }
-                
-                if (data.upper_bound > data.num_pages){
-                    data.upper_bound = data.num_pages
-                }
-                var offset = 0;
-                for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
-                    offset = i
-                    var aPage = $('<a/>')
-                    .attr('class', 'setpointer')
-                    .text(i + 0);
-                   
-                    $(aPage).click(function(offset) {
-                        return function() {
-
-
-                            getwishes(offset);
-                            console.log("offset")
-                        }
-                    }(offset));
-                   
-                    var page = $('<li/>').append(aPage);
-                    if ((data.number) == i) {
-                        $(page).attr('class', 'active setpointer');
+                $(aPrev).click(function() {
+                    return function() {
+                        offset = data.lower_bound-1
+                        getwishes(offset);
+                        console.log("offset")
                     }
-         
-                    $('.pagination').append(page);
-                    //offset = offset + itemsPerPage;
-                 
-                }
-                // var mainPagination = 
-                //     `<span class="current">`
-                //         `&nbsp;${data.number}  of  ${data.paginator.num_pages}.</span>`
+                }(offset));
 
-                // $('.pagination').append(mainPagination)    
+    //            var prevLink = $('<li/>').append(aPrev);
+                
+                $('.pagination').append(aPrev);
+
+             }
+            
+            if (data.upper_bound > data.num_pages){
+                data.upper_bound = data.num_pages
+            }
+            var offset = 0;
+
+            for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
+                offset = i
+                var aPage = $('<a/>')
+                .attr('class', 'setpointer')
+                .text(i + 0);
                
-                if (data.has_next){
-                    var nextLink = $('<li/>').append($('<a/>').attr({
-                            // 'href': '#'
-                            'class': 'setpointer'
-                        }, {
-                            'aria-label': 'Next'
-                        })
-                        .append($('<span/>').attr('aria-hidden', 'true').html('&raquo;')));
+                $(aPage).click(function(offset) {
+                    return function() {
 
-                    $(nextLink).click(function() {
-                        return function() {
-                            offset = data.upper_bound+1
-                            getwishes(offset);
-                            console.log("offset")
-                        }
-                    }(offset));
-                     
 
-                    $('.pagination').append(nextLink);        
+                        getwishes(offset);
+                        console.log("offset")
+                    }
+                }(offset));
+               
+                var page = $('<li/>').append(aPage);
+                if ((data.number) == i) {
+                    $(page).attr('class', 'active setpointer');
                 }
+     
+                $('.pagination').append(page);
+                //offset = offset + itemsPerPage;
+             
+            }
+            // var mainPagination = 
+            //     `<span class="current">`
+            //         `&nbsp;${data.number}  of  ${data.paginator.num_pages}.</span>`
 
-                // var addPaginInfo = '<span class="current">'
-                // &nbsp;Page {{ all_pages.number }} of {{ all_pages.paginator.num_pages }}.</span>
+            // $('.pagination').append(mainPagination)    
+           
+            if (data.has_next){
+                var nextLink = $('<li/>').append($('<a/>').attr({
+                        // 'href': '#'
+                        'class': 'setpointer'
+                    }, {
+                        'aria-label': 'Next'
+                    })
+                    .append($('<span/>').attr('aria-hidden', 'true').html('&raquo;')));
 
-                    // var addPaginInfo = $('<span/>').attr({
-                    //         'class':'current'
-                    //     }, {
-                    //         'aria-label': '&nbsp;'+data.number+' of '+data.num_pages+''
-                    //     });
-                    var addPaginInfo = "";
-                    addPaginInfo += '<span class=current>&nbsp;'+data.number+''
-                    addPaginInfo+= 'of '+data.num_pages+'</span>'
+                $(nextLink).click(function() {
+                    return function() {
+                        offset = data.upper_bound+1
+                        getwishes(offset);
+                        console.log("offset")
+                    }
+                }(offset));
+                 
 
-                    $('.pagination').append(addPaginInfo);        
+                $('.pagination').append(nextLink);        
+            }
+            var addPaginInfo = "";
+            addPaginInfo += '<span class=current>&nbsp;'+data.number+''
+            addPaginInfo+= 'of '+data.num_pages+'</span>'
 
+            $('.pagination').append(addPaginInfo);        
 
           },
           error: function(error) {

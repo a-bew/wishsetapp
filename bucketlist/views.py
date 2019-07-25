@@ -288,7 +288,6 @@ def simulate_range(total, limit, pagination_per_page):     # No more needed alte
 
 
     get_range_ = get_range[:]
-    print(1, get_range_[:])
 
     get_range = list()
  
@@ -296,7 +295,6 @@ def simulate_range(total, limit, pagination_per_page):     # No more needed alte
     for j in range(0, num2, pagination_per_page):
         get_range.append((1+j, j+pagination_per_page))
 
-    print(2, get_range)
     return get_range
 
 
@@ -319,7 +317,6 @@ def getWish(request):
         #wishes = user.wishes.filter(active=True, parent__isnull=True)
         wishes_dict = []
 
-        print(_auth_user_id, user, wishes)
 
         limit = 3
         pages_display_per_page = 2
@@ -331,7 +328,6 @@ def getWish(request):
         page = request.POST.get('page', '')
         if page == '1': page = ''
 
-        print(page, "page")
         newList = []
         
         try:
@@ -372,51 +368,50 @@ def getWish(request):
 
                 })
 
-        range_ = simulate_range(total, limit, pages_display_per_page)
 
         # range_ = simulate_range(total, limit)[:]
         # current_num = wishes.number
 
         # num_pos = int(len(range_)/current_num)
         # print(decode(num_pos), "page number")
-        # try:
-        for wish in wishes:
-
-            wish_dict = {
-                'id': wish.id,
-                'Title': wish.wish_title,
-                'Description': wish.wish_description,
-                'Date': wish.wish_date}
-            wishes_dict.append(wish_dict)
-        newList[0]['num_pages']= paginator.num_pages
-        newList[0]["number"] = page if page else 1
-
         try:
-            pag = setPagination(range_, page)
-            newList[0]['upper_bound']= pag[1]
-            newList[0]['lower_bound']= pag[0]
-            #if pagination range in page 1 has '1', 
-            #reset 'has_previous' and 'has_next'
+            range_ = simulate_range(total, limit, pages_display_per_page)
 
-            if pag[0] == 1 and pag[0]:
-                newList[0]['has_previous'] = False
-                newList[0]['has_next'] = True
+            for wish in wishes:
 
-        except (ValueError, TypeError):
-            newList[0]['upper_bound']= pages_display_per_page
-            newList[0]['lower_bound'] = 1
+                wish_dict = {
+                    'id': wish.id,
+                    'Title': wish.wish_title,
+                    'Description': wish.wish_description,
+                    'Date': wish.wish_date}
+                wishes_dict.append(wish_dict)
+            newList[0]['num_pages']= paginator.num_pages
+            newList[0]["number"] = page if page else 1
+
+            try:
+                pag = setPagination(range_, page)
+                newList[0]['upper_bound']= pag[1]
+                newList[0]['lower_bound']= pag[0]
+                #if pagination range in page 1 has '1', 
+                #reset 'has_previous' and 'has_next'
+
+                if pag[0] == 1 and pag[0]:
+                    newList[0]['has_previous'] = False
+                    newList[0]['has_next'] = True
+
+            except (ValueError, TypeError):
+                newList[0]['upper_bound']= pages_display_per_page
+                newList[0]['lower_bound'] = 1
 
 
-          
-        newList.append(wishes_dict)
-        
-        response = JsonResponse(newList, safe=False)
+              
+            newList.append(wishes_dict)
+            
+            response = JsonResponse(newList, safe=False)
 
-        return HttpResponse(response)
-        del reponse
-        pass
-        # except Exception, e:
-        #     return HttpResponseRedirect('error.html', error = str(e))    
+            return HttpResponse(response)
+        except Exception, e:
+            return HttpResponseRedirect('error.html', error = str(e))    
             #re Create your views here.
 
 
