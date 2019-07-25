@@ -318,10 +318,10 @@ def getWish(request):
         wishes_dict = []
 
         if len(wishes)<1:
-            limit = 1
+            limit = 0
             pages_display_per_page = 0
         elif len(wishes) >= 1 or len(wishes) <= 6:
-            limit = 2
+            limit = 1
             pages_display_per_page = 1
         else:
             limit = 3
@@ -345,7 +345,6 @@ def getWish(request):
                 'next_page_number' : wishes.next_page_number(),
                 'start_index' : wishes.start_index(),
                 'end_index' : wishes.end_index()
-
                 })
 
         except PageNotAnInteger:
