@@ -394,6 +394,11 @@ function getwishes(page) {
                 content += '</li>'
                 
             });
+
+            if (!content){
+              content = '<h3>Set New Wish</h3>'
+            }
+
             $('#ulist').append(content);
             data = data[0]
              if (data.has_previous){
@@ -425,6 +430,7 @@ function getwishes(page) {
                 data.upper_bound = data.num_pages
             }
             var offset = 0;
+
 
             for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
                 offset = i
@@ -484,10 +490,6 @@ function getwishes(page) {
 
           },
           error: function(error) {
-
-            content = '<h3>Set New Wish Today</h3>'
-
-            $('#ulist').append(content);
 
             console.log(error);
           }
