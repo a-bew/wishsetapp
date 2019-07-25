@@ -1,0 +1,573 @@
+{% load staticfiles %}
+
+<html>
+
+    <head lang = 'en'>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap -->
+        <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet" media="screen">
+        
+        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+        <link href="{% static 'css/css.css' %}" rel="stylesheet" >
+        <title>Django - {% block title %}Django Bucket List App!{% endblock %}</title>
+        <script src="{% static 'js/jquery-1.11.2.js' %}"></script>
+        
+        <script src="{% static 'js/angular.min.js' %}"></script>
+
+    <style>
+        .trash {
+            color: rgb(209, 91, 71);
+        }
+        .panel-body .checkbox {
+            display: inline-block;
+            margin: 0px;
+        }
+        .list-group {
+            margin-bottom: 0px;
+        }
+    </style>
+    </head>
+
+<body>
+ 
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    {% if user.is_authenticated %}
+                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+
+                    <li role="presentation"><a href="/bucketlist/addWish/">Add Item</a>
+                    </li>
+
+                    <li role = "presentation"><a href="/bucketlist/restricted/">Restricted</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/logout/">Logout</a></li>
+                    {% else %}
+
+                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/Signin/">Sign In</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/showSignUp/">Sign Up</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            <h3 class="text-muted">Python Django App</h3>
+            <span>Welcome {{ user.username}}</span>
+        </div>
+ 
+        <div class="jumbotron" style="text-align: center;">
+
+            <p class="lead"></p>
+          
+            {% if user.is_authenticated %}
+
+            <div class="row">
+                <div class="col-md-12">
+             
+                    <div class="panel-body">
+                        <ul id="ulist" class="list-group">
+             
+             
+             
+                        </ul>
+                    </div>
+             
+                </div>
+            </div>
+<!--             <div class="list-group">
+              <a href="#" class="list-group-item active">
+                <h4 class="list-group-item-heading">Wish Title</h4>
+                <p class="list-group-item-text">Wish Description</p>
+              </a>
+            </div>
+
+ -->
+
+            <nav>
+                <ul class="pagination">
+<!--                     <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a>
+                    </li>
+                    <li><a href="#">2</a>
+                    </li>
+                    <li><a href="#">3</a>
+                    </li>
+                    <li><a href="#">4</a>
+                    </li>
+                    <li><a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+ -->                </ul>
+            </nav>
+             
+             <div class="displayInfo">  </div>
+            {% else %}
+            <h1 >Bucket List App</h1>
+
+            <p><a class="btn btn-lg btn-success" href="/bucketlist/showSignUp/" role="button">Sign up today</a>
+            </p>
+            {% endif %}
+        </div>
+
+
+        {% if not user.is_authenticated %}
+        <div class="row marketing">
+            <div id = "allwishes-left" class="col-md-6">
+<!--                 <h4>Bucket List</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+ --> 
+            </div>
+ 
+            <div class="col-md-6" id="allwishes-right">
+<!--                 <h4>Bucket List</h4>
+                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+ --> 
+            </div>
+        </div>
+
+
+        {% endif %}
+    <hr/>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Update Wish</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Title:</label>
+                            <input type="text" class="form-control" id="editTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Description:</label>
+                            <textarea class="form-control" id="editDescription"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnUpdate" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Delete Pop up Box -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="text-align:center;">
+                    <h4 class="modal-title" style="color:red;" id="deleteModalLabel">You are going to Delete this forever !!</h4>
+                </div>
+     
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="Delete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; Company 2015</p>
+    </footer>
+
+
+</div>
+
+     {% block javascript %}
+
+<script src scr="{% static 'js/bucket_ajax.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/csrf.js' %}"></script>
+
+<script rel="javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+<script id="listTemplate" type="text/x-jQuery-tmpl"></script>
+
+<script type="text/javascript">
+
+{% if user.is_authenticated %}
+
+  getwishes("")
+
+{% else %}
+
+  getAllWish()
+
+
+{% endif %}
+
+
+function wishes(data) {
+
+    console.log(data)
+    var wishObj = data[1];
+    var wish = '';
+ //   console.log(data.object_list)     
+    $.each(wishObj, function(index, value) {
+        // wish = $(div).clone();
+        // $(wish).find('h4').text(value.Title);
+        // $(wish).find('p').text(value.Description);
+        // $('.jumbotron').append(wish);
+        content = "";        
+        content += '<li class="list-group-item">'
+        content += '<div class="checkbox">'
+        content += '<label>'+value.Title+'</label>'
+        content += '</div>'
+        content += '<div class="pull-right action-buttons">'
+        content += '<a data-id="'+ value.id +'" onclick="Edit(this)"' 
+        content += '><span class="glyphicon'
+        content += ' glyphicon-pencil"></span></a>'
+        content += '<a data-id="'+ value.id +'" onclick="ConfirmDelete(this)">'
+        content += '<span class="glyphicon glyphicon-trash"></span></a>'
+        content += '</div>'
+        content += '</li>'
+        
+        $('#ulist').append(content);
+
+    });
+
+     data = data[0]
+     console.log(data.has_previous, data.has_next, data.lower_bound, data.upper_bound)
+
+
+         if (data.has_previous){
+
+            var aPrev = $('<li/>').append($('<a/>').attr({
+                    // 'href': '#'
+
+                }, {
+                    'aria-label': 'Previous'
+                })
+                .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
+
+            $(aPrev).click(function() {
+                return function() {
+                    offset = data.lower_bound-1
+                    getwishes(offset);
+                    console.log("offset")
+                }
+            }(offset));
+
+//            var prevLink = $('<li/>').append(aPrev);
+            
+            $('.pagination').append(aPrev);
+
+         }
+        
+        if (data.upper_bound > data.num_pages){
+            data.upper_bound = data.num_pages
+        }
+        var offset = 0;
+        for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
+            offset = i
+            var aPage = $('<a/>').text(i + 0);
+           
+            $(aPage).click(function(offset) {
+                return function() {
+
+
+                    getwishes(offset);
+                    console.log("offset")
+                }
+            }(offset));
+           
+            var page = $('<li/>').append(aPage);
+            if ((data.number) == i) {
+                $(page).attr('class', 'active');
+            }
+ 
+            $('.pagination').append(page);
+            //offset = offset + itemsPerPage;
+         
+        }
+        // var mainPagination = 
+        //     `<span class="current">`
+        //         `&nbsp;${data.number}  of  ${data.paginator.num_pages}.</span>`
+
+        // $('.pagination').append(mainPagination)    
+       
+        if (data.has_next){
+            var nextLink = $('<li/>').append($('<a/>').attr({
+                    // 'href': '#'
+                }, {
+                    'aria-label': 'Next'
+                })
+                .append($('<span/>').attr('aria-hidden', 'true').html('&raquo;')));
+
+            $(nextLink).click(function() {
+                return function() {
+                    offset = data.upper_bound+1
+                    getwishes(offset);
+                    console.log("offset")
+                }
+            }(offset));
+             
+
+            $('.pagination').append(nextLink);        
+        }
+
+        // var addPaginInfo = '<span class="current">'
+        // &nbsp;Page {{ all_pages.number }} of {{ all_pages.paginator.num_pages }}.</span>
+
+            // var addPaginInfo = $('<span/>').attr({
+            //         'class':'current'
+            //     }, {
+            //         'aria-label': '&nbsp;'+data.number+' of '+data.num_pages+''
+            //     });
+            var addPaginInfo = "";
+            addPaginInfo += '<span class=current>&nbsp;'+data.number+''
+            addPaginInfo+= 'of '+data.num_pages+'</span>'
+
+            $('.pagination').append(addPaginInfo);        
+
+
+
+}
+
+//getwishes(page)
+function getwishes(page) {
+    $(document).ready(function(){
+        $.ajax({
+          url: '/bucketlist/ajax/getwish/',
+          type: 'POST',
+          data: {'page': page},
+          success: function(data){
+            result = JSON.parse(data)
+            $('#ulist').empty()
+
+            $('.pagination').empty()
+
+            console.log(result)
+
+            // var div = $('<div>')
+            //     .attr('class', 'list-group')
+            //     .append($('<a>')
+            //         .attr('class', 'list-group-item active')
+            //         .append($('<h4>')
+            //             .attr('class', 'list-group-item-heading'),
+            //             $('<p>')
+            //             .attr('class', 'list-group-item-text')));
+            wishes(result)
+
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        })
+        // JQuery code to be added in here.
+    });
+}
+
+
+function getWishesUpdates(evt) {
+    page = evt.rel
+
+    $(document).ready(function(){
+        $.ajax({
+          url: '/bucketlist/ajax/getwish/',
+          type: 'POST',
+          page: page,
+          success: function(data){
+            result = JSON.parse(data)
+            console.log(result)
+            // var div = $('<div>')
+            //     .attr('class', 'list-group')
+            //     .append($('<a>')
+            //         .attr('class', 'list-group-item active')
+            //         .append($('<h4>')
+            //             .attr('class', 'list-group-item-heading'),
+            //             $('<p>')
+            //             .attr('class', 'list-group-item-text')));
+            wishes(result)
+
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        })
+        // JQuery code to be added in here.
+    });
+}
+
+// userListData = data;
+// var dataLength = data.length
+var isEven = function(){
+    return dataLength%2 == 0;
+}
+
+// Code to set titleCase End
+
+//getAllWish()
+function getAllWish(){
+    $(document).ready(function(){
+        $.ajax({
+          url: '/bucketlist/ajax/getallwish/',
+          type: 'GET', 
+          success: function(data){
+            console.log(data)
+            var allwish = JSON.parse(data);
+            console.log(allwish[0],"==parsed==");
+
+            var wish = '';
+            
+            var left = "", right = "";
+
+            $.each(allwish, function(index, value) {
+
+              if ((index+1)%2 != 0){
+                left += '<h4>'+ titleCase(value.Title)+'</h4>'
+                left += '<p>'+ value.Description +'</p>'
+                left += '<h6><b>By:'+titleCase(value.User)+ '</b> <em>' +value.Email.toLowerCase() +'</em></h6>'
+                left += '<br>'
+              } else {
+                right += '<h4>'+ titleCase(value.Title) +'</h4>'
+                right += '<p>'+ value.Description +'</p>'
+                right += '<h6><b>By:'+titleCase(value.User)+ '</b> <em>' +value.Email.toLowerCase() +'</em></h6>'
+                right += '<br>'
+              }
+
+            });
+
+            $('#allwishes-left').append(left);
+            $('#allwishes-right').append(right);
+
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        })
+        // JQuery code to be added in here.
+    });
+}
+
+function ConfirmDelete(elem) {
+    localStorage.setItem('deleteId', $(elem).attr('data-id'));
+    $('#deleteModal').modal();
+}
+
+// Edit
+
+function Edit(elm) {
+    localStorage.setItem('editId',$(elm).attr('data-id'));
+    $.ajax({
+        url: '/bucketlist/ajax/getwishbyid/',
+        data: {
+            id: $(elm).attr('data-id')
+        },
+        type: 'POST',
+        success: function(res) {
+            // Parse the received JSON string\
+            data = JSON.parse(res);
+             
+            //Populate the Pop up
+            $('#editTitle').val(data['Title']);
+            $('#editDescription').val(data['Description']);
+             
+            // Trigger the Pop Up
+            $('#editModal').modal();
+
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+// Update Event
+
+$('#btnUpdate').click(function() {
+    $.ajax({
+        url: '/bucketlist/ajax/updatewish/',
+        data: {
+            wish_title: $('#editTitle').val(),
+            wish_description: $('#editDescription').val(),
+            id: localStorage.getItem('editId')
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function(data) {
+            $('#editModal').modal('hide');
+            // Re populate the grid
+            // var data = JSON.parse(res);
+            // getwishes();
+            window.location.href=/bucketlist/;
+            window.location.reload=true;
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+  });
+
+// Delete
+function Delete() {
+    $.ajax({
+        url: '/bucketlist/ajax/deletewish/',
+        data: {
+            id: localStorage.getItem('deleteId')
+        },
+        type: 'POST',
+        success: function(res) {
+            var result = JSON.parse(res);
+            if (result.status == 'OK') {
+                $('#deleteModal').modal('hide');
+                window.location.href=/bucketlist/;
+                window.location.reload=true;                
+            } else {
+                alert(result.status);
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+// Code to set titleCase Start
+
+let titleCase = (str)=>{
+  let arr = str.toLowerCase().split(" ");
+  
+  arr = arr.map(str=>toTitleCase(str))
+  str = arr.join(" ")
+  return str;
+}
+
+let toTitleCase= (str)=>{
+  let strToArr = str.split("");
+  
+  strToArr[0] = strToArr[0].toUpperCase(); 
+   // console.log(strToArr)    
+ return strToArr.join("")
+}
+
+//titleCase("I'm a little tea pot");
+
+            </script>
+{% endblock %}
+</body>
+ 
+</html>

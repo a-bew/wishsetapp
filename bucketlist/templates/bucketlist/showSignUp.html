@@ -1,0 +1,70 @@
+{% load staticfiles %}
+
+<html>
+
+    <head lang = 'en'>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Bootstrap -->
+	    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+		<link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet" media="screen">
+		
+		<link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+	    <link href="{% static 'css/css.css' %}" rel="stylesheet" >
+		<title>Django - {% block title %}Register Here!{% endblock %}</title>
+
+		<script src="{% static 'js/jquery-1.11.2.js' %}"></script>
+    
+    </head>
+
+
+    <body>
+
+        <div class="container">
+          <div class="header">
+            <nav>
+              <ul class="nav nav-pills pull-right">
+                <li role="presentation" ><a href="/bucketlist/">Home</a></li>
+                <li role="presentation"><a href="/bucketlist/Signin/">Sign In</a></li>
+                <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+              </ul>
+            </nav>
+            <h3 class="text-muted">Python Django App</h3>
+          </div>
+     
+        <div class="jumbotron">
+            <h1 style="text-align: center;">Django List App</h1>
+
+            <!-- New -->
+            {% if registered %}
+            <strong>Thank you for registering!</strong>
+            <a href="/bucketlist/">Return to the homepage.</a><br/>
+            {% else %}
+            
+            <form class="form-signin span8" id="user_form" method="post" action="/bucketlist/showSignUp/">
+            
+            {% csrf_token %}
+            {% for field in user_form.visible_fields %}
+           
+            {{ field.errors }}
+            {{ field.help_text }}<br />
+            {{ field }}<br />
+            {% endfor %}
+            <!-- Provide a button to click to submit the form. -->
+            <input id="btnSignUp" class="btn btn-lg btn-primary btn-block" style = "margin-width: auto;" type="submit" name="submit" value="Sign up" />
+            
+            </form>
+
+            {% endif %}
+        </div>   
+   <hr/>
+        <footer class="footer">
+            <p>&copy; Company 2015</p>
+        </footer>
+ 
+</div>
+</body>
+ 
+</html>

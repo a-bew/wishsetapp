@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{% block content %} 
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    {% if user.is_authenticated %}
+                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+
+                    <li role = "presentation"><a href="/bucketlist/restricted/">Restricted</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/logout/">Logout</a></li>
+                    {% else %}
+
+                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/Signin/">Sign In</a>
+                    </li>
+                    <li role="presentation"><a href="/bucketlist/showSignUp/">Sign Up</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            <h3 class="text-muted">Python Django App</h3>
+        </div>
+ 
+        <div class="jumbotron" style="text-align: center;">
+          
+            {% if user.is_authenticated %}
+
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    <h4 class="list-group-item-heading">Wish Title</h4>
+                    <p class="list-group-item-text">Wish description</p>
+                </a>
+            </div>
+            {% else %}
+            <p><a class="btn btn-lg btn-success" href="/bucketlist/showSignUp/" role="button">Sign up today</a>
+            </p>
+            {% endif %}
+        </div>
+      <hr/>
+        <footer class="footer">
+            <p>&copy; Company 2015</p>
+        </footer>
+ 
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+
+<!--    <script src scr="{% static 'js/bucket_ajax.js' %}"></script>  -->
+
+
+<script>
+    jQuery(document).ready(function(){
+        $.ajax({
+            url: 'http://127.0.0.1:8000/bucketlist/ajax/getWish',
+            type: 'GET',
+            success: function(res) {
+                console.log(res);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+var div = $('<div>')
+    .attr('class', 'list-group')
+    .append($('<a>')
+        .attr('class', 'list-group-item active')
+        .append($('<h4>')
+            .attr('class', 'list-group-item-heading'),
+            $('<p>')
+            .attr('class', 'list-group-item-text')));
+
+var wishObj = JSON.parse(res);
+
+var wish = '';
+ 
+$.each(wishObj, function(index, value) {
+    wish = $(div).clone();
+    $(wish).find('h4').text(value.Title);
+    $(wish).find('p').text(value.Description);
+    $('.jumbotron').append(wish);
+});
+
+</script>
+
+
+
+{% endblock %}
