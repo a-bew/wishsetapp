@@ -320,7 +320,7 @@ def getWish(request):
         if len(wishes)<1:
             limit = 1
             pages_display_per_page = 0
-        elif len(wishes) => 1 or len(wishes) <= 6:
+        elif len(wishes) >= 1 or len(wishes) <= 6:
             limit = 3
             pages_display_per_page = 1
         else:
