@@ -484,6 +484,11 @@ function getwishes(page) {
 
           },
           error: function(error) {
+
+            content = '<h3>Set New Wish Today</h3>'
+
+            $('#ulist').append(content);
+
             console.log(error);
           }
         })
