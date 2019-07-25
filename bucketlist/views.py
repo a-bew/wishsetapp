@@ -317,15 +317,12 @@ def getWish(request):
         #wishes = user.wishes.filter(active=True, parent__isnull=True)
         wishes_dict = []
 
-        if len(wishes)<1:
-            limit = 0
-            pages_display_per_page = 0
-        elif len(wishes) >= 1 or len(wishes) <= 6:
-            limit = 1
-            pages_display_per_page = 1
-        else:
-            limit = 3
-            pages_display_per_page = 2
+        # if len(wishes) >= 1 or len(wishes) <= 6:
+        limit = 1
+        pages_display_per_page = 1
+        # else:
+        #     limit = 3
+        #     pages_display_per_page = 2
 
         total = len(wishes[:])
 
@@ -354,7 +351,7 @@ def getWish(request):
                 'has_previous' : wishes.has_previous(),
                 'has_next' : wishes.has_next(),
                 'previous_page_number' : None,
-                'next_page_number' : wishes.next_page_number() or None,
+                'next_page_number' : wishes.next_page_number(),
                 'start_index' : wishes.start_index(),
                 'end_index' : wishes.end_index()
 
@@ -407,9 +404,7 @@ def getWish(request):
             except (ValueError, TypeError):
                 newList[0]['upper_bound']= pages_display_per_page
                 newList[0]['lower_bound'] = 1
-
-
-              
+      
             newList.append(wishes_dict)
             
             response = JsonResponse(newList, safe=False)

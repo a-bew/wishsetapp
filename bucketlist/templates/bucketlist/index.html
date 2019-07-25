@@ -365,7 +365,6 @@ function getwishes(page) {
           type: 'POST',
           data: {'page': page},
           success: function(data){
-
             content = "";    
 
 
@@ -395,14 +394,11 @@ function getwishes(page) {
                 content += '</li>'
                 
             });
-
-
+            $('#ulist').append(content);
             data = data[0]
-
-            var prevLink = ""
              if (data.has_previous){
 
-                var prevLink = $('<li/>').append($('<a/>').attr({
+                var aPrev = $('<li/>').append($('<a/>').attr({
                         // 'href': '#'
                         'class': 'setpointer'
 
@@ -411,7 +407,7 @@ function getwishes(page) {
                     })
                     .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
 
-                $(prevLink).click(function() {
+                $(aPrev).click(function() {
                     return function() {
                         offset = data.lower_bound-1
                         getwishes(offset);
@@ -428,8 +424,8 @@ function getwishes(page) {
             if (data.upper_bound > data.num_pages){
                 data.upper_bound = data.num_pages
             }
-
             var offset = 0;
+
             for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
                 offset = i
                 var aPage = $('<a/>')
@@ -449,7 +445,6 @@ function getwishes(page) {
                 if ((data.number) == i) {
                     $(page).attr('class', 'active setpointer');
                 }
-
      
                 $('.pagination').append(page);
                 //offset = offset + itemsPerPage;
@@ -461,9 +456,8 @@ function getwishes(page) {
 
             // $('.pagination').append(mainPagination)    
            
-           var nextLink = "";
             if (data.has_next){
-                nextLink = $('<li/>').append($('<a/>').attr({
+                var nextLink = $('<li/>').append($('<a/>').attr({
                         // 'href': '#'
                         'class': 'setpointer'
                     }, {
@@ -480,17 +474,12 @@ function getwishes(page) {
                 }(offset));
                  
 
-                // $('.pagination').append(nextLink);        
+                $('.pagination').append(nextLink);        
             }
             var addPaginInfo = "";
             addPaginInfo += '<span class=current>&nbsp;'+data.number+''
             addPaginInfo+= 'of '+data.num_pages+'</span>'
 
-            // $('.pagination').append(prevLink);        
-            // $('.pagination').append(pageG);        
-            $('#ulist').html(content);
-
-            $('.pagination').append(nextLink);        
             $('.pagination').append(addPaginInfo);        
 
           },
