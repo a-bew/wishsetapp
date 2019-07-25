@@ -318,7 +318,7 @@ def getWish(request):
         wishes_dict = []
 
         if len(wishes) >= 1 or len(wishes) <= 6:
-            limit = 1
+            limit = 3
             pages_display_per_page = 1
         else:
             limit = 3
