@@ -366,134 +366,132 @@ function getwishes(page) {
           data: {'page': page},
           success: function(data){
 
-    //         content = "";    
+            content = "";    
 
 
-    //         data = JSON.parse(data)
+            data = JSON.parse(data)
 
-    //         $('#ulist').empty()
+            $('#ulist').empty()
 
-    //         $('.pagination').empty()
+            $('.pagination').empty()
 
-    //         var wishObj = data[1];
+            var wishObj = data[1];
 
-    //         var wish = '';
+            var wish = '';
 
-    //         $.each(wishObj, function(index, value) {
+            $.each(wishObj, function(index, value) {
 
-    //             content += '<li class="list-group-item">'
-    //             content += '<div class="checkbox">'
-    //             content += '<label>'+value.Title+'</label>'
-    //             content += '</div>'
-    //             content += '<div class="pull-right action-buttons">'
-    //             content += '<a data-id="'+ value.id +'" onclick="Edit(this)"' 
-    //             content += '><span class="glyphicon'
-    //             content += ' glyphicon-pencil"></span></a>'
-    //             content += '<a data-id="'+ value.id +'" onclick="ConfirmDelete(this)">'
-    //             content += '<span class="glyphicon glyphicon-trash"></span></a>'
-    //             content += '</div>'
-    //             content += '</li>'
+                content += '<li class="list-group-item">'
+                content += '<div class="checkbox">'
+                content += '<label>'+value.Title+'</label>'
+                content += '</div>'
+                content += '<div class="pull-right action-buttons">'
+                content += '<a data-id="'+ value.id +'" onclick="Edit(this)"' 
+                content += '><span class="glyphicon'
+                content += ' glyphicon-pencil"></span></a>'
+                content += '<a data-id="'+ value.id +'" onclick="ConfirmDelete(this)">'
+                content += '<span class="glyphicon glyphicon-trash"></span></a>'
+                content += '</div>'
+                content += '</li>'
                 
-    //         });
+            });
 
 
-    //         data = data[0]
+            data = data[0]
 
-    //         var prevLink = ""
-    //          if (data.has_previous){
+            var prevLink = ""
+             if (data.has_previous){
 
-    //             var prevLink = $('<li/>').append($('<a/>').attr({
-    //                     // 'href': '#'
-    //                     'class': 'setpointer'
+                var prevLink = $('<li/>').append($('<a/>').attr({
+                        // 'href': '#'
+                        'class': 'setpointer'
 
-    //                 }, {
-    //                     'aria-label': 'Previous'
-    //                 })
-    //                 .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
+                    }, {
+                        'aria-label': 'Previous'
+                    })
+                    .append($('<span/>').attr('aria-hidden', 'true').html('&laquo;')));
 
-    //             $(prevLink).click(function() {
-    //                 return function() {
-    //                     offset = data.lower_bound-1
-    //                     getwishes(offset);
-    //                     console.log("offset")
-    //                 }
-    //             }(offset));
+                $(prevLink).click(function() {
+                    return function() {
+                        offset = data.lower_bound-1
+                        getwishes(offset);
+                        console.log("offset")
+                    }
+                }(offset));
 
-    // //            var prevLink = $('<li/>').append(aPrev);
+    //            var prevLink = $('<li/>').append(aPrev);
                 
-    //             $('.pagination').append(aPrev);
+                $('.pagination').append(aPrev);
 
-    //          }
+             }
             
-    //         if (data.upper_bound > data.num_pages){
-    //             data.upper_bound = data.num_pages
-    //         }
+            if (data.upper_bound > data.num_pages){
+                data.upper_bound = data.num_pages
+            }
 
-    //         var offset = 0;
-    //         for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
-    //             offset = i
-    //             var aPage = $('<a/>')
-    //             .attr('class', 'setpointer')
-    //             .text(i + 0);
+            var offset = 0;
+            for (var i = parseInt(data.lower_bound); i <= parseInt(data.upper_bound); i++) {
+                offset = i
+                var aPage = $('<a/>')
+                .attr('class', 'setpointer')
+                .text(i + 0);
                
-    //             $(aPage).click(function(offset) {
-    //                 return function() {
+                $(aPage).click(function(offset) {
+                    return function() {
 
 
-    //                     getwishes(offset);
-    //                     console.log("offset")
-    //                 }
-    //             }(offset));
+                        getwishes(offset);
+                        console.log("offset")
+                    }
+                }(offset));
                
-    //             var page = $('<li/>').append(aPage);
-    //             if ((data.number) == i) {
-    //                 $(page).attr('class', 'active setpointer');
-    //             }
+                var page = $('<li/>').append(aPage);
+                if ((data.number) == i) {
+                    $(page).attr('class', 'active setpointer');
+                }
 
      
-    //             $('.pagination').append(page);
-    //             //offset = offset + itemsPerPage;
+                $('.pagination').append(page);
+                //offset = offset + itemsPerPage;
              
-    //         }
-    //         // var mainPagination = 
-    //         //     `<span class="current">`
-    //         //         `&nbsp;${data.number}  of  ${data.paginator.num_pages}.</span>`
+            }
+            // var mainPagination = 
+            //     `<span class="current">`
+            //         `&nbsp;${data.number}  of  ${data.paginator.num_pages}.</span>`
 
-    //         // $('.pagination').append(mainPagination)    
+            // $('.pagination').append(mainPagination)    
            
-    //        var nextLink = "";
-    //         if (data.has_next){
-    //             nextLink = $('<li/>').append($('<a/>').attr({
-    //                     // 'href': '#'
-    //                     'class': 'setpointer'
-    //                 }, {
-    //                     'aria-label': 'Next'
-    //                 })
-    //                 .append($('<span/>').attr('aria-hidden', 'true').html('&raquo;')));
+           var nextLink = "";
+            if (data.has_next){
+                nextLink = $('<li/>').append($('<a/>').attr({
+                        // 'href': '#'
+                        'class': 'setpointer'
+                    }, {
+                        'aria-label': 'Next'
+                    })
+                    .append($('<span/>').attr('aria-hidden', 'true').html('&raquo;')));
 
-    //             $(nextLink).click(function() {
-    //                 return function() {
-    //                     offset = data.upper_bound+1
-    //                     getwishes(offset);
-    //                     console.log("offset")
-    //                 }
-    //             }(offset));
+                $(nextLink).click(function() {
+                    return function() {
+                        offset = data.upper_bound+1
+                        getwishes(offset);
+                        console.log("offset")
+                    }
+                }(offset));
                  
 
-    //             // $('.pagination').append(nextLink);        
-    //         }
-    //         var addPaginInfo = "";
-    //         addPaginInfo += '<span class=current>&nbsp;'+data.number+''
-    //         addPaginInfo+= 'of '+data.num_pages+'</span>'
+                // $('.pagination').append(nextLink);        
+            }
+            var addPaginInfo = "";
+            addPaginInfo += '<span class=current>&nbsp;'+data.number+''
+            addPaginInfo+= 'of '+data.num_pages+'</span>'
 
-    //         // $('.pagination').append(prevLink);        
-    //         // $('.pagination').append(pageG);        
-    //         $('#ulist').html(content);
+            // $('.pagination').append(prevLink);        
+            // $('.pagination').append(pageG);        
+            $('#ulist').html(content);
 
-    //         $('.pagination').append(nextLink);        
-    //         $('.pagination').append(addPaginInfo);        
-
-               $('#ulist').html("<h2>Is working</h2>");
+            $('.pagination').append(nextLink);        
+            $('.pagination').append(addPaginInfo);        
 
           },
           error: function(error) {
