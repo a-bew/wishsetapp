@@ -378,6 +378,8 @@ function getwishes(page) {
 
             var wish = '';
 
+
+
             $.each(wishObj, function(index, value) {
 
                 content += '<li class="list-group-item">'
@@ -400,6 +402,7 @@ function getwishes(page) {
             }
 
             $('#ulist').append(content);
+           
             data = data[0]
              if (data.has_previous){
 
@@ -487,6 +490,9 @@ function getwishes(page) {
             addPaginInfo+= 'of '+data.num_pages+'</span>'
 
             $('.pagination').append(addPaginInfo);        
+        if (content){
+            $('.pagination').empty()
+        }
 
           },
           error: function(error) {
