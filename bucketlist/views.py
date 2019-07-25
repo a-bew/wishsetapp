@@ -317,12 +317,12 @@ def getWish(request):
         #wishes = user.wishes.filter(active=True, parent__isnull=True)
         wishes_dict = []
 
-        # if len(wishes) >= 1 or len(wishes) <= 6:
-        limit = 1
-        pages_display_per_page = 1
-        # else:
-        #     limit = 3
-        #     pages_display_per_page = 2
+        if len(wishes) >= 1 or len(wishes) <= 6:
+            limit = 1
+            pages_display_per_page = 1
+        else:
+            limit = 3
+            pages_display_per_page = 2
 
         total = len(wishes[:])
 
@@ -351,7 +351,7 @@ def getWish(request):
                 'has_previous' : wishes.has_previous(),
                 'has_next' : wishes.has_next(),
                 'previous_page_number' : None,
-                'next_page_number' : wishes.next_page_number(),
+                'next_page_number' : (if wishes.has_next()?wishes.next_page_number():0) 
                 'start_index' : wishes.start_index(),
                 'end_index' : wishes.end_index()
 
