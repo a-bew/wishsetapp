@@ -379,7 +379,7 @@ function getwishes(page) {
             var wish = '';
 
 
-
+            var content_temp = true;
             $.each(wishObj, function(index, value) {
 
                 content += '<li class="list-group-item">'
@@ -396,9 +396,11 @@ function getwishes(page) {
                 content += '</li>'
                 
             });
-
+            
             if (!content){
               content = '<h3>Set New Wish</h3>'
+            } else {
+                content_temp = false;
             }
 
             $('#ulist').append(content);
@@ -490,7 +492,7 @@ function getwishes(page) {
             addPaginInfo+= 'of '+data.num_pages+'</span>'
 
             $('.pagination').append(addPaginInfo);        
-        if (content){
+        if (!content_temp){
             $('.pagination').empty()
         }
 
