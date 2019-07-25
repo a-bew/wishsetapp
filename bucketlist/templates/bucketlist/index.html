@@ -13,7 +13,7 @@
         
         <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
         <link href="{% static 'css/css.css' %}" rel="stylesheet" >
-        <title>Django - {% block title %}Django Bucket List App!{% endblock %}</title>
+        <title>Bucket - {% block title %}List App!{% endblock %}</title>
         <script src="{% static 'js/jquery-1.11.2.js' %}"></script>
         
         <script src="{% static 'js/angular.min.js' %}"></script>
@@ -62,7 +62,7 @@
 
                 </ul>
             </nav>
-            <h3 class="text-muted">Python Django App</h3>
+            <h3 class="text-muted">Bucket List App</h3>
             <span>Welcome {{ user.username}}</span>
         </div>
  
@@ -121,8 +121,9 @@
              
              <div class="displayInfo">  </div>
             {% else %}
-            <h1 >Bucket List App</h1>
-
+            <h1>Excited About Something</h1>
+            <p>You can start airing your wish, connect and see your dreams coming True</p>
+             
             <p><a class="btn btn-lg btn-success" href="/bucketlist/showSignUp/" role="button">Sign up today</a>
             </p>
             {% endif %}
@@ -399,8 +400,7 @@ function getwishes(page) {
             
             if (!content){
               content = '<h3>Set New Wish</h3>'
-            } else {
-                content_temp = false;
+              content_temp = false;
             }
 
             $('#ulist').append(content);
