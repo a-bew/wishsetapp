@@ -9,14 +9,14 @@
             <nav>
                 <ul class="nav nav-pills pull-right">
                     {% if user.is_authenticated %}
-                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    <li role="presentation" class="active"><a href="/">Home</a>
 
                     <li role = "presentation"><a href="/bucketlist/restricted/">Restricted</a>
                     </li>
                     <li role="presentation"><a href="/bucketlist/logout/">Logout</a></li>
                     {% else %}
 
-                    <li role="presentation" class="active"><a href="/bucketlist/">Home</a>
+                    <li role="presentation" class="active"><a href="/">Home</a>
                     </li>
                     <li role="presentation"><a href="/bucketlist/Signin/">Sign In</a>
                     </li>
@@ -63,7 +63,7 @@
 <script>
     jQuery(document).ready(function(){
         $.ajax({
-            url: 'http://127.0.0.1:8000/bucketlist/ajax/getWish',
+            url: '/bucketlist/ajax/getWish',
             type: 'GET',
             success: function(res) {
                 console.log(res);

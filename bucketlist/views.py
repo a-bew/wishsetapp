@@ -88,7 +88,7 @@ def Signin(request):
 
 @login_required
 def restricted(request):
-    return render(request, 'restricted.html', {'context': "Since you're logged in, you can see this text!",},)
+    return render(request, 'bucketlist/restricted.html', {'context': "Since you're logged in, you can see this text!",},)
 
 @login_required
 def user_logout(request):
